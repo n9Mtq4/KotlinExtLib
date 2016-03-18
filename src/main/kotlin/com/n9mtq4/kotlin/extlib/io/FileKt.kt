@@ -1,7 +1,7 @@
 @file:JvmName("KotlinFile")
 @file:Suppress("unused")
 
-package com.n9mtq4.kotlin.extlib;
+package com.n9mtq4.kotlin.extlib.io;
 
 import java.io.BufferedReader
 import java.io.BufferedWriter
