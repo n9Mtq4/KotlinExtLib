@@ -3,6 +3,7 @@
 
 package com.n9mtq4.kotlin.extlib.io;
 
+import com.n9mtq4.kotlin.extlib.syntax.def
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.Closeable
@@ -45,22 +46,19 @@ open class FileKt(file: File, val canRead: Boolean = false, val canWrite: Boolea
 		}else this.bufferedReader = null
 	}
 	
-	fun read(): String? {
+	fun read() = def {
 		assertCanRead()
 		return bufferedReader!!.readLine()
 	}
 	
-	fun readAll(): String {
+	fun readText() = def {
 		assertCanRead()
-		var str = ""
-		var line: String? = read()
-		while (line != null) {
-			str += line + "\n"
-			line = read()
-		}
-		//		TODO: reset the reader
-		
-		return str
+		bufferedReader?.readText()
+	}
+	
+	fun readLines() = def {
+		assertCanRead()
+		bufferedReader?.readLines()
 	}
 	
 	fun write(msg: String): FileKt {
@@ -70,10 +68,10 @@ open class FileKt(file: File, val canRead: Boolean = false, val canWrite: Boolea
 		return this
 	}
 	
-	fun writeln(msg: String): FileKt {
+	fun writeln(msg: String) = def {
 		assertCanWrite()
 		write(msg + "\n")
-		return this
+		this
 	}
 	
 	override fun close() {
@@ -89,9 +87,9 @@ open class FileKt(file: File, val canRead: Boolean = false, val canWrite: Boolea
 		if (!canRead) throw IllegalStateException("This can not read a file")
 	}
 	
-	override fun delete(): Boolean {
+	override fun delete() = def {
 		close()
-		return super.delete()
+		super.delete()
 	}
 	
 }
