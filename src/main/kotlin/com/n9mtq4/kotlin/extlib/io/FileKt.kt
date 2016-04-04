@@ -3,7 +3,6 @@
 
 package com.n9mtq4.kotlin.extlib.io;
 
-import com.n9mtq4.kotlin.extlib.syntax.def
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.Closeable
@@ -46,19 +45,19 @@ open class FileKt(file: File, val canRead: Boolean = false, val canWrite: Boolea
 		}else this.bufferedReader = null
 	}
 	
-	fun read() = def {
+	fun read(): String {
 		assertCanRead()
 		return bufferedReader!!.readLine()
 	}
 	
-	fun readText() = def {
+	fun readText(): String? {
 		assertCanRead()
-		bufferedReader?.readText()
+		return bufferedReader?.readText()
 	}
 	
-	fun readLines() = def {
+	fun readLines(): List<String>? {
 		assertCanRead()
-		bufferedReader?.readLines()
+		return bufferedReader?.readLines()
 	}
 	
 	fun write(msg: String): FileKt {
@@ -68,10 +67,10 @@ open class FileKt(file: File, val canRead: Boolean = false, val canWrite: Boolea
 		return this
 	}
 	
-	fun writeln(msg: String) = def {
+	fun writeln(msg: String): FileKt {
 		assertCanWrite()
 		write(msg + "\n")
-		this
+		return this
 	}
 	
 	override fun close() {
@@ -79,17 +78,17 @@ open class FileKt(file: File, val canRead: Boolean = false, val canWrite: Boolea
 		bufferedWriter?.close()
 	}
 	
-	private inline fun assertCanWrite() {
+	private fun assertCanWrite() {
 		if (!canWrite) throw IllegalStateException("This can not write to a file!")
 	}
 	
-	private inline fun assertCanRead() {
+	private fun assertCanRead() {
 		if (!canRead) throw IllegalStateException("This can not read a file")
 	}
 	
-	override fun delete() = def {
+	override fun delete(): Boolean {
 		close()
-		super.delete()
+		return super.delete()
 	}
 	
 }
