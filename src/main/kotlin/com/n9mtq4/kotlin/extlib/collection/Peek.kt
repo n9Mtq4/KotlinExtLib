@@ -2,7 +2,10 @@ package com.n9mtq4.kotlin.extlib.collection
 
 /**
  * Created by will on 3/17/16 at 11:46 PM.
- *
+ * 
+ * Peak and PeakIndexed functions.
+ * A forEach, but returns the list to continue.
+ * 
  * @author Will "n9Mtq4" Bresnahan
  */
 inline fun <T> List<T>.peek(body: (T) -> Unit): List<T> {
