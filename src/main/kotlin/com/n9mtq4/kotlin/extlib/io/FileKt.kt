@@ -45,9 +45,9 @@ open class FileKt(file: File, val canRead: Boolean = false, val canWrite: Boolea
 		}else this.bufferedReader = null
 	}
 	
-	fun read(): String {
+	fun read(): String? {
 		assertCanRead()
-		return bufferedReader!!.readLine()
+		return bufferedReader?.readLine()
 	}
 	
 	fun readText(): String? {
