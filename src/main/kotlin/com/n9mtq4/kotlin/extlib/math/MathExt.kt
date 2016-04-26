@@ -1,0 +1,100 @@
+package com.n9mtq4.kotlin.extlib.math
+
+/**
+ * Created by will on 4/26/16 at 5:52 PM.
+ *
+ * @author Will "n9Mtq4" Bresnahan
+ */
+
+fun logb(b: Double, x: Double) = Math.log10(x) / Math.log10(b)
+
+fun Int.abs() = Math.abs(this)
+fun Double.abs() = Math.abs(this)
+fun Long.abs() = Math.abs(this)
+fun Float.abs() = Math.abs(this)
+
+fun Int.toRadians() = Math.toRadians(this.toDouble())
+fun Double.toRadians() = Math.toRadians(this)
+fun Long.toRadians() = Math.toRadians(this.toDouble())
+fun Float.toRadians() = Math.toRadians(this.toDouble())
+
+fun Int.toDegrees() = Math.toDegrees(this.toDouble())
+fun Double.toDegrees() = Math.toDegrees(this)
+fun Long.toDegrees() = Math.toDegrees(this.toDouble())
+fun Float.toDegrees() = Math.toDegrees(this.toDouble())
+
+fun Int.floor() = Math.floor(this.toDouble())
+fun Double.floor() = Math.floor(this)
+fun Long.floor() = Math.floor(this.toDouble())
+fun Float.floor() = Math.floor(this.toDouble())
+
+fun Int.ceil() = Math.ceil(this.toDouble())
+fun Double.ceil() = Math.ceil(this)
+fun Long.ceil() = Math.ceil(this.toDouble())
+fun Float.ceil() = Math.ceil(this.toDouble())
+
+fun Int.sqrt() = Math.sqrt(this.toDouble())
+fun Double.sqrt() = Math.sqrt(this)
+fun Long.sqrt() = Math.sqrt(this.toDouble())
+fun Float.sqrt() = Math.sqrt(this.toDouble())
+
+fun Int.log10() = Math.log10(this.toDouble())
+fun Double.log10() = Math.log10(this)
+fun Long.log10() = Math.log10(this.toDouble())
+fun Float.log10() = Math.log10(this.toDouble())
+
+fun Int.log() = Math.log(this.toDouble())
+fun Double.log() = Math.log(this)
+fun Long.log() = Math.log(this.toDouble())
+fun Float.log() = Math.log(this.toDouble())
+
+infix fun Int.pow(x: Int) = Math.pow(this.toDouble(), x.toDouble())
+infix fun Double.pow(x: Int) = Math.pow(this, x.toDouble())
+infix fun Long.pow(x: Int) = Math.pow(this.toDouble(), x.toDouble())
+infix fun Float.pow(x: Int) = Math.pow(this.toDouble(), x.toDouble())
+infix fun Int.pow(x: Double) = Math.pow(this.toDouble(), x)
+infix fun Double.pow(x: Double) = Math.pow(this, x)
+infix fun Long.pow(x: Double) = Math.pow(this.toDouble(), x)
+infix fun Float.pow(x: Double) = Math.pow(this.toDouble(), x)
+infix fun Int.pow(x: Long) = Math.pow(this.toDouble(), x.toDouble())
+infix fun Double.pow(x: Long) = Math.pow(this, x.toDouble())
+infix fun Long.pow(x: Long) = Math.pow(this.toDouble(), x.toDouble())
+infix fun Float.pow(x: Long) = Math.pow(this.toDouble(), x.toDouble())
+infix fun Int.pow(x: Float) = Math.pow(this.toDouble(), x.toDouble())
+infix fun Double.pow(x: Float) = Math.pow(this, x.toDouble())
+infix fun Long.pow(x: Float) = Math.pow(this.toDouble(), x.toDouble())
+infix fun Float.pow(x: Float) = Math.pow(this.toDouble(), x.toDouble())
+
+infix fun Int.max(x: Int) = Math.max(this, x)
+infix fun Double.max(x: Int) = Math.max(this, x.toDouble())
+infix fun Long.max(x: Int) = Math.max(this, x.toLong())
+infix fun Float.max(x: Int) = Math.max(this, x.toFloat())
+infix fun Int.max(x: Double) = Math.max(this, x.toInt())
+infix fun Double.max(x: Double) = Math.max(this, x)
+infix fun Long.max(x: Double) = Math.max(this, x.toLong())
+infix fun Float.max(x: Double) = Math.max(this, x.toFloat())
+infix fun Int.max(x: Long) = Math.max(this, x.toInt())
+infix fun Double.max(x: Long) = Math.max(this, x.toDouble())
+infix fun Long.max(x: Long) = Math.max(this, x)
+infix fun Float.max(x: Long) = Math.max(this, x.toFloat())
+infix fun Int.max(x: Float) = Math.max(this, x.toInt())
+infix fun Double.max(x: Float) = Math.max(this, x.toDouble())
+infix fun Long.max(x: Float) = Math.max(this, x.toLong())
+infix fun Float.max(x: Float) = Math.max(this, x.toFloat())
+
+infix fun Int.min(x: Int) = Math.min(this, x)
+infix fun Double.min(x: Int) = Math.min(this, x.toDouble())
+infix fun Long.min(x: Int) = Math.min(this, x.toLong())
+infix fun Float.min(x: Int) = Math.min(this, x.toFloat())
+infix fun Int.min(x: Double) = Math.min(this, x.toInt())
+infix fun Double.min(x: Double) = Math.min(this, x)
+infix fun Long.min(x: Double) = Math.min(this, x.toLong())
+infix fun Float.min(x: Double) = Math.min(this, x.toFloat())
+infix fun Int.min(x: Long) = Math.min(this, x.toInt())
+infix fun Double.min(x: Long) = Math.min(this, x.toDouble())
+infix fun Long.min(x: Long) = Math.min(this, x)
+infix fun Float.min(x: Long) = Math.min(this, x.toFloat())
+infix fun Int.min(x: Float) = Math.min(this, x.toInt())
+infix fun Double.min(x: Float) = Math.min(this, x.toDouble())
+infix fun Long.min(x: Float) = Math.min(this, x.toLong())
+infix fun Float.min(x: Float) = Math.min(this, x.toFloat())
