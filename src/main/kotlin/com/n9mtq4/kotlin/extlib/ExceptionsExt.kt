@@ -50,3 +50,6 @@ inline fun <T> pstAndGiven(returnValue: T, body: () -> T): T {
 	}
 	return returnValue
 }
+
+inline fun ignore(body: () -> Unit) = ignoreAndUnit(body)
+inline fun pst(body: () -> Unit) = pstAndUnit(body)
