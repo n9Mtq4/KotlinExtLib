@@ -38,7 +38,7 @@ import kotlin.reflect.KProperty
  * 
  * @author Will "n9Mtq4" Bresnahan
  */
-class ExtensionVariable<K, T>() {
+class ExtensionVariable<T>() {
 	
 	private data class Single<T>(var v: T)
 	
