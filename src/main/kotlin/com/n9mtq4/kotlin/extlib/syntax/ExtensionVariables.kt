@@ -42,15 +42,15 @@ class ExtensionVariable<T>() {
 	
 	private data class Single<T>(var v: T)
 	
-	private val fields = HashMap<String, Single<T>>()
+	private val fields = HashMap<Int, Single<T>>()
 	
 	operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-		return (fields[thisRef.toString()] ?: throw UninitializedPropertyAccessException("The variable '${property.name}' in $thisRef hasn't been initialized")).v
+		return (fields[thisRef!!.hashCode()] ?: throw UninitializedPropertyAccessException("The variable '${property.name}' in $thisRef hasn't been initialized")).v
 	}
 	
 	operator fun setValue(thisRef: Any?, property: KProperty<*>, x: T) {
-		if (fields[thisRef.toString()] == null) fields[thisRef.toString()] = Single(x)
-		else fields[thisRef.toString()]?.v = x
+		if (fields[thisRef!!.hashCode()] == null) fields[thisRef.hashCode()] = Single(x)
+		else fields[thisRef.hashCode()]?.v = x
 	}
 	
 }
