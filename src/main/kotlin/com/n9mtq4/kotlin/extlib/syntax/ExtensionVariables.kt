@@ -31,16 +31,27 @@ import kotlin.reflect.KProperty
  * var Person.age: Int by ExtensionVariable()
  * 
  * val personInstance = Person("Name")
- * person.age = 21
- * println(age) // prints "21"
+ * personInstance.age = 21
+ * println(personInstance.age) // prints "21"
  * ```
  * 
- * @param K the class that is being extended
+ * **INITIALIZED VALUE WARNINGS:**
+ * If you are using the default initialized value, give it a non-null
+ * value. If a null value is passed in, the result will be the same as
+ * if no initialized value is passed at all. For example:
+ * ```koltin
+ * var Person.mother: Person by ExtensionVariable(null)
+ * val personInstance = Person("Name")
+ * println(personInstance.mother) // throws UninitializedPropertyAccessException instead of NPE
+ * ```
+ * 
+ * 
+ * @param initializedValue the value the variable should be initialized to. **See warnings above.**
  * @param T the return type of the variable
  * 
  * @author Will "n9Mtq4" Bresnahan
  */
-class ExtensionVariable<T>() {
+class ExtensionVariable<T>(private val initializedValue: T? = null) {
 	
 	companion object {
 		private fun uniqueObjId(o: Any) = System.identityHashCode(o)
@@ -51,7 +62,10 @@ class ExtensionVariable<T>() {
 	private val fields = HashMap<Int, Single<T>>()
 	
 	operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-		return (fields[uniqueObjId(thisRef!!)] ?: throw UninitializedPropertyAccessException("The variable '${property.name}' in $thisRef hasn't been initialized")).v
+		val p = fields[uniqueObjId(thisRef!!)] ?:
+				if (initializedValue == null) throw UninitializedPropertyAccessException("The variable '${property.name}' in $thisRef hasn't been initialized") 
+				else return initializedValue
+		return p.v
 	}
 	
 	operator fun setValue(thisRef: Any?, property: KProperty<*>, x: T) {
