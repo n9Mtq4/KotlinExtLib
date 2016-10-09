@@ -13,5 +13,5 @@ package com.n9mtq4.kotlin.extlib.loop
  * @param body what to repeat forever
  * */
 inline fun forever(body: () -> Unit) {
-	while (true) body.invoke()
+	while (true) body()
 }
