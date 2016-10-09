@@ -20,8 +20,10 @@ import kotlin.reflect.KProperty
  * 
  * Now please note that the efficiency of this is not at all good.
  * It has to look up the instance of the object in a [HashMap].
- * It also adds a [String] to the [HashMap]. This String is **never**
- * removed and therefor is a big memory leak issue.
+ * It also adds an [Int] to the [HashMap]. This int is **never**
+ * removed and therefor causes a memory leak. Since ints aren't that
+ * large in memory it should not be a huge problem as long as this
+ * you are not using extension variables in loop.
  * 
  * Here is some example code:
  * ```kotlin
@@ -40,17 +42,21 @@ import kotlin.reflect.KProperty
  */
 class ExtensionVariable<T>() {
 	
+	companion object {
+		private fun uniqueObjId(o: Any) = System.identityHashCode(o)
+	}
+	
 	private data class Single<T>(var v: T)
 	
 	private val fields = HashMap<Int, Single<T>>()
 	
 	operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-		return (fields[thisRef!!.hashCode()] ?: throw UninitializedPropertyAccessException("The variable '${property.name}' in $thisRef hasn't been initialized")).v
+		return (fields[uniqueObjId(thisRef!!)] ?: throw UninitializedPropertyAccessException("The variable '${property.name}' in $thisRef hasn't been initialized")).v
 	}
 	
 	operator fun setValue(thisRef: Any?, property: KProperty<*>, x: T) {
-		if (fields[thisRef!!.hashCode()] == null) fields[thisRef.hashCode()] = Single(x)
-		else fields[thisRef.hashCode()]?.v = x
+		if (fields[uniqueObjId(thisRef!!)] == null) fields[uniqueObjId(thisRef)] = Single(x)
+		else fields[uniqueObjId(thisRef)]?.v = x
 	}
 	
 }
@@ -92,7 +98,7 @@ class ExtensionVariable<T>() {
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-@Deprecated("Any object that uses the extension variable is permently saved in memory", replaceWith = ReplaceWith("ExtensionVariable"))
+@Deprecated("Any object that uses the extension variable is permanently saved in memory", replaceWith = ReplaceWith("ExtensionVariable"))
 class InefficientExtensionVariable<K, T>() {
 	
 	private data class Single<T>(var v: T)
