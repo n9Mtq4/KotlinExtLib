@@ -8,14 +8,14 @@ package com.n9mtq4.kotlin.extlib
 inline fun <T> ignoreAndNull(body: () -> T): T? {
 	try {
 		return body.invoke()
-	}catch (ignored: Exception) {}
+	}catch (ignored: Throwable) {}
 	return null
 }
 
 inline fun <T> pstAndNull(body: () -> T): T? {
 	try {
 		return body.invoke()
-	}catch (e: Exception) {
+	}catch (e: Throwable) {
 		e.printStackTrace()
 	}
 	return null
@@ -24,13 +24,13 @@ inline fun <T> pstAndNull(body: () -> T): T? {
 inline fun ignoreAndUnit(body: () -> Unit) {
 	try {
 		body.invoke()
-	}catch (ignored: Exception) {}
+	}catch (ignored: Throwable) {}
 }
 
 inline fun pstAndUnit(body: () -> Unit) {
 	try {
 		body.invoke()
-	}catch (e: Exception) {
+	}catch (e: Throwable) {
 		e.printStackTrace()
 	}
 }
@@ -38,14 +38,14 @@ inline fun pstAndUnit(body: () -> Unit) {
 inline fun <T> ignoreAndGiven(returnValue: T, body: () -> T): T {
 	try {
 		return body.invoke()
-	}catch (ignored: Exception) {}
+	}catch (ignored: Throwable) {}
 	return returnValue
 }
 
 inline fun <T> pstAndGiven(returnValue: T, body: () -> T): T {
 	try {
 		return body.invoke()
-	}catch (e: Exception) {
+	}catch (e: Throwable) {
 		e.printStackTrace()
 	}
 	return returnValue
