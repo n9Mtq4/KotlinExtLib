@@ -28,11 +28,14 @@ import kotlin.reflect.KProperty
  * Here is some example code:
  * ```kotlin
  * class Person(val name: String)
- * var Person.age: Int by ExtensionVariable()
+ * val personAgeEV = ExtensionVariable<Int>() // define delegate separately for free fun later
+ * var Person.age: Int by personAgeEV
  * 
  * val personInstance = Person("Name")
  * personInstance.age = 21
  * println(personInstance.age) // prints "21"
+ * 
+ * personAgeEV.free(personInstance) // good idea to do this
  * ```
  * 
  * **INITIALIZED VALUE WARNINGS:**
@@ -71,6 +74,10 @@ class ExtensionVariable<T>(private val initializedValue: T? = null) {
 	operator fun setValue(thisRef: Any?, property: KProperty<*>, x: T) {
 		if (fields[uniqueObjId(thisRef!!)] == null) fields[uniqueObjId(thisRef)] = Single(x)
 		else fields[uniqueObjId(thisRef)]?.v = x
+	}
+	
+	fun free(thisRef: Any?) {
+		thisRef?.let { fields.remove(uniqueObjId(it)) }
 	}
 	
 }
