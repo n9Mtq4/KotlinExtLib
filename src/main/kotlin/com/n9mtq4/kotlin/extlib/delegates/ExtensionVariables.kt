@@ -1,4 +1,4 @@
-package com.n9mtq4.kotlin.extlib.syntax
+package com.n9mtq4.kotlin.extlib.delegates
 
 import java.util.HashMap
 import kotlin.reflect.KProperty
@@ -76,6 +76,15 @@ class ExtensionVariable<T>(private val initializedValue: T? = null) {
 		else fields[uniqueObjId(thisRef)]?.v = x
 	}
 	
+	/**
+	 * Removes the object unique identifier int and the 
+	 * value of the property from this extension variable
+	 * delegate. Recommended to do if your variable should
+	 * be garbage collected. If this is not called, then 
+	 * the value of the variable will stay in memory forever.
+	 * 
+	 * @param thisRef The object to clear the value of
+	 * */
 	fun free(thisRef: Any?) {
 		thisRef?.let { fields.remove(uniqueObjId(it)) }
 	}
