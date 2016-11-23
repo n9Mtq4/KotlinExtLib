@@ -5,4 +5,4 @@ package com.n9mtq4.kotlin.extlib.syntax
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-inline fun <T> def(body: () -> T) = body.invoke()
+inline fun <T> def(body: () -> T) = body()
