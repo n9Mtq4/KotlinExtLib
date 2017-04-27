@@ -14,9 +14,9 @@ import kotlin.reflect.KProperty
  * "
  * -https://kotlinlang.org/docs/reference/extensions.html#extension-properties
  * 
- * Ha ha ha. This is 2016. Computers are fast enough. Lets forget about
+ * Ha ha ha. Computers are fast enough. Lets forget about
  * efficiency for a minute and give ourselves the ability to make
- * extension variables because their usefulness is extremely useful.
+ * extension variables because of their usefulness.
  * 
  * Now please note that the efficiency of this is not at all good.
  * It has to look up the instance of the object in a [HashMap].
@@ -57,7 +57,26 @@ import kotlin.reflect.KProperty
 class ExtensionVariable<T>(private val initializedValue: T? = null) {
 	
 	companion object {
+		
 		private fun uniqueObjId(o: Any) = System.identityHashCode(o)
+		
+		/**
+		 * Finds the instance of the extension variable when
+		 * it is declared inside a class.
+		 * 
+		 * @param name the name of the extension variable
+		 * @param instance the instance of the class that the extension variable is in
+		 * @param index the index of the extension variable if there are multiple with the same name.
+		 * @return the extension variable controller instance that controls the extension variable
+		 * */
+		fun <R> instanceFind(name: String, instance: Any, index: Int = 0): ExtensionVariable<R> {
+			val clazz = instance.javaClass
+			return clazz.getDeclaredField("$name\$delegate${if (index == 0) "" else "\$$index"}").let {
+				it.isAccessible = true
+				it.get(instance) as ExtensionVariable<R>
+			}
+		}
+		
 	}
 	
 	private data class Single<T>(var v: T)
@@ -87,61 +106,6 @@ class ExtensionVariable<T>(private val initializedValue: T? = null) {
 	 * */
 	fun free(thisRef: Any?) {
 		thisRef?.let { fields.remove(uniqueObjId(it)) }
-	}
-	
-}
-
-/**
- * Created by will on 4/26/16 at 9:57 PM.
- *
- * "
- * Note that, since extensions do not actually insert members into classes,
- * there’s no efficient way for an extension property to have a backing field.
- * This is why initializers are not allowed for extension properties.
- * Their behavior can only be defined by explicitly providing getters/setters.
- * "
- * -https://kotlinlang.org/docs/reference/extensions.html#extension-properties
- *
- * Ha ha ha. This is 2016. Computers are fast enough. Lets forget about
- * efficiency for a minute and give ourselves the ability to make
- * extension variables because their usefulness is extremely useful.
- *
- * Now please note that the efficiency of this is not at all good.
- * It has to look up the instance of the object in a [HashMap].
- * It also adds an instance of whatever object. This instance
- * is **never** removed and therefor is a big memory leak issue.
- * 
- * **Please use [ExtensionVariable] for a little better performance**
- *
- * Here is some example code:
- * ```kotlin
- * class Person(val name: String)
- * var Person.age: Int by ExtensionVariable&lt;Person, Int&gt;()
- *
- * val personInstance = Person("Name")
- * person.age = 21
- * println(age) // prints "21"
- * ```
- *
- * @param K the class that is being extended
- * @param T the return type of the variable
- *
- * @author Will "n9Mtq4" Bresnahan
- */
-@Deprecated("Any object that uses the extension variable is permanently saved in memory", replaceWith = ReplaceWith("ExtensionVariable"))
-class InefficientExtensionVariable<K, T>() {
-	
-	private data class Single<T>(var v: T)
-	
-	private val fields = HashMap<K, Single<T>>()
-	
-	operator fun getValue(thisRef: K, property: KProperty<*>): T {
-		return (fields[thisRef] ?: throw UninitializedPropertyAccessException("The variable '${property.name}' in $thisRef hasn't been initialized")).v
-	}
-	
-	operator fun setValue(thisRef: K, property: KProperty<*>, x: T) {
-		if (fields[thisRef] == null) fields[thisRef] = Single(x)
-		else fields[thisRef]?.v = x
 	}
 	
 }

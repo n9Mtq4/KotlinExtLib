@@ -67,7 +67,7 @@ class ExtensionVariableTest {
 		
 		// FIXME: the getDelegates method does not currently work in this situation
 		if (true) return
-		(o.getDelegate(Any::v) as ExtensionVariable<*>).free(o)
+		ExtensionVariable.instanceFind<Int>("v", o).free(o)
 		
 		val thrown = try {
 			
