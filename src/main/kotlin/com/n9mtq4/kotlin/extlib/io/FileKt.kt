@@ -26,7 +26,7 @@ fun open(fPath: String, t: String) = open(File(fPath), t)
 fun open(f: File, canRead: Boolean = false, canWrite: Boolean = false, append: Boolean = false) = FileKt(f.absolutePath, canRead, canWrite, append)
 fun open(fPath: String , canRead: Boolean = false, canWrite: Boolean = false, append: Boolean = false) = FileKt(fPath, canRead, canWrite, append)
 
-open class FileKt(file: File, val canRead: Boolean = false, val canWrite: Boolean = false, val append: Boolean = false) : File(file.absolutePath), Closeable {
+open class FileKt(file: File, val canRead: Boolean = false, val canWrite: Boolean = false, val append: Boolean = false, var autoFlush: Boolean = true) : File(file.absolutePath), Closeable {
 	
 	private val bufferedReader: BufferedReader?
 	private val bufferedWriter: BufferedWriter?
@@ -63,7 +63,7 @@ open class FileKt(file: File, val canRead: Boolean = false, val canWrite: Boolea
 	fun write(msg: String): FileKt {
 		assertCanWrite()
 		bufferedWriter!!.append(msg)
-		bufferedWriter.flush()
+		if (autoFlush) flushWriter()
 		return this
 	}
 	
@@ -71,6 +71,11 @@ open class FileKt(file: File, val canRead: Boolean = false, val canWrite: Boolea
 		assertCanWrite()
 		write(msg + "\n")
 		return this
+	}
+	
+	fun flushWriter() {
+		assertCanWrite() // TODO: should I throw exception or silently fail?
+		bufferedWriter?.flush()
 	}
 	
 	override fun close() {
