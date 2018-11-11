@@ -8,15 +8,13 @@ import kotlin.reflect.KProperty
  * 
  * "
  * Note that, since extensions do not actually insert members into classes,
- * there’s no efficient way for an extension property to have a backing field.
+ * there’s no **efficient** way for an extension property to have a backing field.
  * This is why initializers are not allowed for extension properties.
  * Their behavior can only be defined by explicitly providing getters/setters.
  * "
  * -https://kotlinlang.org/docs/reference/extensions.html#extension-properties
  * 
- * Ha ha ha. Computers are fast enough. Lets forget about
- * efficiency for a minute and give ourselves the ability to make
- * extension variables because of their usefulness.
+ * Well, let's try an inefficient way to get extension variables to get a backing field.
  * 
  * Now please note that the efficiency of this is not at all good.
  * It has to look up the instance of the object in a [HashMap].
@@ -73,6 +71,7 @@ class ExtensionVariable<T>(private val initializedValue: T? = null) {
 			val clazz = instance.javaClass
 			return clazz.getDeclaredField("$name\$delegate${if (index == 0) "" else "\$$index"}").let {
 				it.isAccessible = true
+				@Suppress("UNCHECKED_CAST")
 				it.get(instance) as ExtensionVariable<R>
 			}
 		}
